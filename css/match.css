@@ -1,0 +1,68 @@
+@charset = "UTF-8";
+
+body {
+  background: black;
+  color: silver;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+h1 {
+  color: silver;
+}
+
+h5 {
+  color: silver;
+}
+
+#container {
+  color: silver;
+  background-color: #000033;
+  border: 10px solid dimgray;
+  border-radius: 20px;
+  height: 90%;
+  width: 90%;
+  min-width: 400px;
+  margin: 0 auto;
+}
+
+#thumbs {
+  background-color: #00004d;
+  border: 10px solid dimgray;
+  border-radius: 20px;
+  height: 90%;
+  width: 90%;
+  min-width: 300px;
+  min-height: 300px;
+  margin: 2% auto;
+  padding: 12px;
+}
+
+.tile {
+  width: 75px;
+  height: 75px;
+  border-radius: 5px;
+  border: 2px solid dimgray;
+  background-color: black;
+  text-align: center;
+  display: inline-block;
+  margin: 1%;
+}
+
+.pic {
+  width: 90%;
+  height: 90%;
+  margin: 5%;
+  display: none;
+}
+
+.mouseOver {
+	width: 75px;
+	height: 75px;
+	border-radius: 5px;
+	border: 2px solid dimgray;
+	background-color: dimgray;
+	text-align: center;
+	display: inline-block;
+	margin: 1%;
+}
