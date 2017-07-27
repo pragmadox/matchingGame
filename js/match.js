@@ -3,6 +3,9 @@ var tileNamesTwo = [];
 var numOfTiles = 8;
 var rowSize = 4;
 var randInt = 0;
+var randTile = 0;
+var popUpOne = 0;
+var popUpTwo = 0;
 
 var choiceOne;
 var choiceTwo;
@@ -16,6 +19,9 @@ var selectDifficulty = document.getElementById("difficulty");
 selectDifficulty.addEventListener("change", adjustDifficulty);
 var thumbs = document.getElementById("thumbs");
 
+var myInterval;
+var myTimer;
+
 var i;
 function populate() {
 	for (i = 0; i < (numOfTiles / 2); i++) {
@@ -25,7 +31,6 @@ function populate() {
 		random();
 		tileOne.id = tileNamesOne[randInt] + "One";
 		tileOne.description = tileNamesOne[randInt];
-		//tileOne.addEventListener("click", userChoice);
 		thumbs.appendChild(tileOne);
 		
 		var picOne = new Image();
@@ -59,11 +64,14 @@ function populate() {
 	allTiles[i].addEventListener('mouseover', mouseOver, false);
 	allTiles[i].addEventListener('mouseout', mouseOut, false);
 	allTiles[i].addEventListener('click', userChoice, false);
-}
+	}
+
+var myInterval = setInterval(toggleDisplay, 6000);
 
 }
 
 function loadJSON() {
+	clearInterval(myInterval);
 	thumbs.innerHTML = "";
 	var myRequest = new XMLHttpRequest();
 	myRequest.onreadystatechange = function () {
@@ -76,7 +84,7 @@ function loadJSON() {
 				tileNamesOne.splice(randInt, 1);
 				tileNamesTwo.splice(randInt, 1);
 			} while (tileNamesOne.length > (numOfTiles / 2));
-			populate();	
+			populate();
 		}	
 	}
 	
@@ -91,22 +99,36 @@ function userChoice() {
 		var identOne = this.id;
 		var snipperOne = identOne.length - 3;
 		descOne = identOne.substring(0, snipperOne);
-		alert(descOne);
-		if(descOne == descTwo) {
-			alert("That is correct!");
-			choiceOne.style.backgroundColor = "red";
-			choiceTwo.style.backgroundColor = "red";
+		
+		if((descOne === descTwo)&&(choiceOne.id != choiceTwo.id)) {
+			choiceTwo.className = "complete";
+			choiceOne.className = "complete";
+			
+			choiceTwo.removeEventListener("click", userChoice);
+			choiceTwo.removeEventListener("mouseover", mouseOver);
+			choiceTwo.removeEventListener("mouseout", mouseOut);
+			
+			choiceOne.removeEventListener("click", userChoice);
+			choiceOne.removeEventListener("mouseover", mouseOver);
+			choiceOne.removeEventListener("mouseout", mouseOut);
 		}
 	} else {
 		choiceTwo = document.getElementById(this.id);
 		var identTwo = this.id;
 		var snipperTwo = identTwo.length - 3;
 		descTwo = identTwo.substring(0, snipperTwo);
-		alert(descTwo);
-		if(descOne == descTwo) {
-			alert("That is correct!");
-			choiceOne.style.backgroundColor = "red";
-			choiceTwo.style.backgroundColor = "red";
+		if((descOne === descTwo)&&(choiceOne.id != choiceTwo.id)) {
+			choiceOne.className = "complete";
+			choiceTwo.className = "complete";
+			
+			choiceOne.removeEventListener("click", userChoice);
+			choiceOne.removeEventListener("mouseover", mouseOver);
+			choiceOne.removeEventListener("mouseout", mouseOut);
+
+			choiceTwo.removeEventListener("click", userChoice);
+			choiceTwo.removeEventListener("mouseover", mouseOver);
+			choiceTwo.removeEventListener("mouseout", mouseOut);
+			
 		}
 		numOfChoices = 0;
 	}
@@ -140,5 +162,41 @@ function adjustDifficulty() {
 	} else if (this.value == "4") {
 		numOfTiles = 60;
 		rowSize = 10;
+	}
+}
+
+function uncover() {
+	var remainingTiles = document.querySelectorAll('.tile');
+	var myNum = Math.floor(Math.random() * remainingTiles.length);
+	var randTile = parseInt(myNum);
+	popUpOne = remainingTiles[randTile];
+	popUpOne.className = "uncover";
+	popUpOne.addEventListener("click", userChoice);
+	
+	var remainingTiles = document.querySelectorAll('.tile');
+	var myNum = Math.floor(Math.random() * remainingTiles.length);
+	var randTile = parseInt(myNum);
+	popUpTwo = remainingTiles[randTile];
+	popUpTwo.className = "uncover";
+	popUpTwo.addEventListener("click", userChoice);
+}
+
+function toggleDisplay() {
+	myTimer = setTimeout(cover, 3000);
+	uncover();
+}
+
+function cover() {
+	if(popUpOne.className != 'complete') {
+		popUpOne.className = "tile";
+	}
+	if(popUpTwo.className != 'complete') {
+		popUpTwo.className = "tile";
+	}
+	var allTiles = document.querySelectorAll('.tile');
+	for( i=0; i < allTiles.length; i++) {
+		allTiles[i].addEventListener('mouseover', mouseOver, false);
+		allTiles[i].addEventListener('mouseout', mouseOut, false);
+		allTiles[i].addEventListener('click', userChoice, false);
 	}
 }
